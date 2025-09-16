@@ -1,205 +1,216 @@
-# Tuma - Local Currency LLM Platform (MVP)
+# Tuma - Local Currency LLM Platform
 
-Tuma is an MVP platform that allows users in emerging markets to access LLM APIs (e.g., GPT-4, Claude) via post-paid, local-currency wallets. Users don't pre-buy credits; API usage is automatically deducted in their local currency (NGN, INR, BRL, etc.) with optional spending caps.
+A modern, multi-currency platform for accessing AI models with local currency wallets, designed for emerging markets.
 
-## 🚀 Features
+## 🌟 Features
 
-- **Multi-Currency Wallets**: Support for USD, NGN, INR, BRL with real-time FX conversion
-- **Post-Paid Model**: No pre-purchasing of credits required
-- **Spending Caps**: Monthly or per-session spending limits
-- **Real-Time Updates**: Live wallet balance and usage notifications via Supabase Realtime
-- **Multiple LLM Providers**: Access to GPT-4, Claude, and other models via OpenRouter
-- **Cost Estimation**: Real-time cost calculation before API calls
-- **Payment Integration**: Support for Stripe, Flutterwave, Paystack, and more
+### Multi-Currency Support
+- **8 Supported Currencies**: USD, INR, MYR, NGN, MXN, BRL, KES, IDR
+- **Individual API Key Wallets**: Each API key has its own wallet in a specific currency
+- **Real-time Currency Conversion**: USD to local currency with 10% spread
+- **Currency Breakdown Dashboard**: View usage and spending by currency
 
-## 🏗️ Architecture
+### AI Model Integration
+- **OpenRouter Integration**: Access to multiple AI models through OpenRouter
+- **Model Selection**: Choose from GPT-4, Claude, Llama, and more
+- **Usage Tracking**: Real-time monitoring of API usage and costs
+- **Spending Limits**: Set per-API key spending caps
 
-### Frontend
-- **Next.js 14** with App Router
-- **TypeScript** for type safety
-- **Tailwind CSS** + **shadcn/ui** for modern UI
-- **Supabase Auth** for authentication
-- **Supabase Realtime** for live updates
+### Payment Processing
+- **Rapyd Integration**: Multi-currency payment processing
+- **Wallet Top-ups**: Add funds to individual API key wallets
+- **Credit Card Support**: Auto-billing capabilities
+- **Mock Payment System**: Development-friendly fallbacks
 
-### Backend
-- **Supabase** (Database + Auth + Realtime + Edge Functions)
-- **OpenRouter** for LLM API access
-- **Shadow USD Ledger** for quota management
-- **Edge Functions** for API routing and wallet management
+### Modern UI/UX
+- **Purple Theme**: Beautiful, modern design
+- **Desktop-First**: Optimized for developer tools
+- **Shadcn UI Components**: High-quality, accessible components
+- **Responsive Design**: Works across all screen sizes
 
-### Database Schema
-- Users and authentication
-- Multi-currency wallets
-- FX rates with markup
-- Transaction history
-- Usage tracking
-- Payment intents
-- Shadow USD ledger
-
-## 🛠️ Setup
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 18+ 
+- npm or yarn
 - Supabase account
 - OpenRouter API key
-- Payment provider accounts (optional for MVP)
+- Rapyd account (optional for development)
 
-### 1. Clone and Install
-```bash
-git clone <repository-url>
-cd tuma-mvp
-npm install
-```
+### Installation
 
-### 2. Environment Variables
-Copy `env.example` to `.env.local` and fill in your credentials:
-
-```bash
-cp env.example .env.local
-```
-
-Required variables:
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-OPENROUTER_API_KEY=your_openrouter_api_key
-```
-
-### 3. Database Setup
-1. Create a new Supabase project
-2. Run the SQL schema from `supabase/schema.sql`
-3. Deploy the Edge Functions:
+1. **Clone the repository**
    ```bash
-   supabase functions deploy chat
-   supabase functions deploy wallet-management
+   git clone https://github.com/Prrash278/tuma.git
+   cd tuma
    ```
 
-### 4. Development
-```bash
-npm run dev
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp env.example .env.local
+   ```
+   
+   Fill in your environment variables:
+   ```env
+   # Supabase
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+   
+   # OpenRouter
+   OPENROUTER_API_KEY=your_openrouter_key
+   OPENROUTER_PROVISIONING_KEY=your_provisioning_key
+   
+   # Rapyd (optional)
+   RAPYD_ACCESS_KEY=your_rapyd_access_key
+   RAPYD_SECRET_KEY=your_rapyd_secret_key
+   ```
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 📁 Project Structure
+
+```
+tuma/
+├── src/
+│   ├── app/                    # Next.js app directory
+│   │   ├── api/               # API routes
+│   │   ├── pricing/           # Pricing page
+│   │   └── wallet/            # Wallet pages
+│   ├── components/            # React components
+│   │   ├── dashboard/         # Dashboard components
+│   │   ├── ui/               # Shadcn UI components
+│   │   └── modals/           # Modal components
+│   ├── lib/                  # Utility libraries
+│   │   ├── currencies.ts     # Currency data and utilities
+│   │   ├── openrouter.ts     # OpenRouter API integration
+│   │   └── rapyd.ts          # Rapyd payment integration
+│   └── types/                # TypeScript type definitions
+├── supabase/                 # Supabase configuration
+└── public/                   # Static assets
 ```
 
-Visit `http://localhost:3000` to see the application.
+## 🔧 Configuration
 
-## 📱 Usage
+### Currency Settings
+The platform supports 8 currencies with real-time conversion rates:
 
-### For Users
-1. **Sign Up**: Create an account with email or Google OAuth
-2. **Create Wallet**: Set up wallets in your preferred currencies
-3. **Set Spending Caps**: Configure monthly or per-session limits
-4. **Use LLMs**: Select models and send messages with real-time cost estimation
-5. **Top Up**: Add funds to wallets via integrated payment methods
+| Currency | Code | Symbol | Flag |
+|----------|------|--------|------|
+| US Dollar | USD | $ | 🇺🇸 |
+| Indian Rupee | INR | ₹ | 🇮🇳 |
+| Malaysian Ringgit | MYR | RM | 🇲🇾 |
+| Nigerian Naira | NGN | ₦ | 🇳🇬 |
+| Mexican Peso | MXN | $ | 🇲🇽 |
+| Brazilian Real | BRL | R$ | 🇧🇷 |
+| Kenyan Shilling | KES | KSh | 🇰🇪 |
+| Indonesian Rupiah | IDR | Rp | 🇮🇩 |
 
-### For Developers
-The platform provides a clean API for:
-- Wallet management
-- Cost estimation
-- LLM API calls
-- Usage tracking
+### AI Models Supported
+- **OpenAI**: GPT-4, GPT-4o, GPT-3.5 Turbo
+- **Anthropic**: Claude 3 Opus, Sonnet, Haiku
+- **Meta**: Llama 3.1 8B
+- **And more** through OpenRouter
+
+## 💳 Payment Integration
+
+### Rapyd Setup
+1. Create a Rapyd account
+2. Get your Access Key and Secret Key
+3. Add them to your `.env.local` file
+4. The platform will automatically use Rapyd for payments
+
+### Mock Payments
+For development, the platform includes mock payment systems that simulate:
 - Payment processing
+- Webhook notifications
+- Transaction confirmations
 
-## 🔧 API Endpoints
+## 🎨 UI Components
 
-### Chat API
-```typescript
-POST /api/chat
-{
-  "model": "gpt-4",
-  "messages": [
-    {"role": "user", "content": "Hello!"}
-  ],
-  "max_tokens": 1000,
-  "temperature": 0.7
-}
-```
+Built with modern design principles:
+- **Purple Theme**: Consistent purple color scheme
+- **Shadcn UI**: High-quality, accessible components
+- **Tailwind CSS**: Utility-first styling
+- **Responsive Design**: Mobile and desktop optimized
 
-### Wallet Management
-```typescript
-// Create wallet
-POST /api/wallet-management?action=create
-{
-  "currency": "NGN",
-  "spending_cap": 10000,
-  "spending_cap_type": "monthly"
-}
+## 📊 Dashboard Features
 
-// Top up wallet
-POST /api/wallet-management?action=topup
-{
-  "wallet_id": "wallet-id",
-  "amount": 5000,
-  "payment_method": "stripe"
-}
-```
+### Currency Breakdown
+- View usage by individual API key currency
+- Converted totals in your primary currency
+- Native currency amounts for context
 
-## 💰 Pricing Model
+### API Key Management
+- Create API keys with specific models and currencies
+- Set spending limits per key
+- Monitor usage in real-time
+- Wallet management per key
 
-- **FX Markup**: 5% markup on currency conversion
-- **Real-Time Rates**: Live FX rates with automatic updates
-- **Transparent Pricing**: All costs shown before API calls
-- **No Hidden Fees**: Clear breakdown of all charges
+### Analytics
+- Usage trends and patterns
+- Cost analysis by currency
+- Spending projections
 
 ## 🔒 Security
 
-- **Row Level Security**: Database policies ensure data isolation
-- **JWT Authentication**: Secure session management
-- **API Rate Limiting**: Prevents abuse and ensures fair usage
-- **Spending Caps**: User-defined limits prevent overspending
-- **Shadow Ledger**: System-level quota management
+- **Environment Variables**: Sensitive data stored securely
+- **API Key Management**: Secure storage and rotation
+- **Payment Security**: PCI-compliant through Rapyd
+- **Rate Limiting**: Built-in usage controls
 
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
 1. Connect your GitHub repository to Vercel
-2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
+2. Add environment variables in Vercel dashboard
+3. Deploy automatically on push to main
 
-### Manual Deployment
-```bash
-npm run build
-npm start
-```
-
-## 📊 Monitoring
-
-- **Supabase Dashboard**: Database and function monitoring
-- **Usage Analytics**: Built-in usage tracking and reporting
-- **Error Logging**: Comprehensive error tracking and alerts
-- **Performance Metrics**: API response times and success rates
+### Other Platforms
+The app can be deployed to any platform that supports Next.js:
+- Netlify
+- Railway
+- DigitalOcean App Platform
+- AWS Amplify
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📄 License
+## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🆘 Support
 
-For support, please:
-1. Check the documentation
-2. Search existing issues
-3. Create a new issue with detailed information
-4. Contact the development team
+- **Documentation**: Check the `/docs` page in the app
+- **Issues**: Report bugs on GitHub Issues
+- **Discussions**: Use GitHub Discussions for questions
 
-## 🔮 Roadmap
+## 🎯 Roadmap
 
-- [ ] Mobile app (React Native)
+- [ ] Mobile app
 - [ ] Additional payment methods
-- [ ] Advanced analytics dashboard
+- [ ] Advanced analytics
+- [ ] Team collaboration features
 - [ ] API rate limiting
-- [ ] Webhook support
-- [ ] Multi-tenant support
-- [ ] Advanced spending controls
-- [ ] Batch processing
-- [ ] Custom model support
+- [ ] Webhook management
 
 ---
 
-Built with ❤️ for emerging markets
+Built with ❤️ for developers in emerging markets
