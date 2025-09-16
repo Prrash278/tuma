@@ -15,7 +15,8 @@ import {
   Activity,
   BookOpen,
   Terminal,
-  CreditCard
+  CreditCard,
+  ShoppingCart
 } from 'lucide-react'
 
 const navigation = [
@@ -58,6 +59,11 @@ const navigation = [
     name: 'Test Payments',
     href: '/test-payments',
     icon: CreditCard,
+  },
+  {
+    name: 'Test Checkout',
+    href: '/test-checkout',
+    icon: ShoppingCart,
   },
   {
     name: 'Settings',
