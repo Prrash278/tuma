@@ -1,0 +1,17 @@
+{
+  "functions": {
+    "src/app/api/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/chat",
+      "destination": "https://your-project.supabase.co/functions/v1/chat"
+    },
+    {
+      "source": "/api/wallet-management",
+      "destination": "https://your-project.supabase.co/functions/v1/wallet-management"
+    }
+  ]
+}
