@@ -55,6 +55,11 @@ const navigation = [
     icon: BookOpen,
   },
   {
+    name: 'Test Payments',
+    href: '/test-payments',
+    icon: CreditCard,
+  },
+  {
     name: 'Settings',
     href: '/settings',
     icon: Settings,

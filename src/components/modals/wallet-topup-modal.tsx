@@ -39,11 +39,56 @@ export function WalletTopUpModal({ apiKey, onTopUp }: WalletTopUpModalProps) {
 
     setIsProcessing(true)
     try {
-      await onTopUp(parseFloat(amount), apiKey.currency)
-      setOpen(false)
-      setAmount('')
+      // Create payment using Rapyd Payments API
+      const paymentData = {
+        amount: parseFloat(amount),
+        currency: apiKey.currency,
+        description: `Wallet top-up for ${apiKey.name}`,
+        merchant_reference_id: `tuma_topup_${apiKey.id}_${Date.now()}`,
+        customer: {
+          name: 'Tuma User',
+          email: 'user@tuma.ai'
+        },
+        payment_method: {
+          type: 'us_visa_card' // This would be determined by the selected payment method
+        },
+        save_payment_method: false,
+        complete_payment_url: `${window.location.origin}/wallet/success`,
+        error_payment_url: `${window.location.origin}/wallet/error`,
+        statement_descriptor: 'TUMA WALLET',
+        metadata: {
+          api_key_id: apiKey.id,
+          api_key_name: apiKey.name,
+          top_up_amount: parseFloat(amount),
+          top_up_currency: apiKey.currency
+        }
+      }
+
+      const response = await fetch('/api/rapyd/payments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData)
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        console.log('Payment created successfully:', result.data)
+        
+        // For now, we'll call the onTopUp callback
+        // In a real implementation, you'd handle the payment flow
+        await onTopUp(parseFloat(amount), apiKey.currency)
+        
+        setOpen(false)
+        setAmount('')
+      } else {
+        throw new Error(result.error || 'Payment creation failed')
+      }
     } catch (error) {
       console.error('Top-up failed:', error)
+      alert(`Top-up failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setIsProcessing(false)
     }
